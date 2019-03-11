@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block wrapper %}
+    {{ parent() }}
+    <div class="flex-1 section">
+        <div class="container">
+
+            {% block body %}{% endblock %}
+
+            {% block security %}{% endblock %}
+        </div>
+    </div>
+
+    {% block footer %}
+        <footer class="footer">
+            <div class="container">
+                <div class="content has-text-centered">
+                </div>
+            </div>
+        </footer>
+    {% endblock %}
+
+{% endblock %}
