@@ -1,17 +1,17 @@
-$('#comment-form').on('click', function(e) {
+$("#comment-form").submit(function(e) {
     e.preventDefault();
-    var form_data = $(this).serialize();
+    const comment = $('.textarea').val();
+    const DATA = comment;
+    const url = $("#comment-form").attr("action");
     $.ajax({
-        url: 'http://localhost:8000/article/sed-omnis',
-        type: 'POST',
-        cache: false,
-        data: $(this).serialize(),
+        type: "POST",
+        url: url,
+        data: DATA,
         dataType:"JSON",
-        success: function (data) {
-            if(data.error != '') {
-                $('#comment-form')[0].reset();
-                $('#App_comment_content').html(data.error);
-            }
+        cache: false,
+        success: function(data) {
+            console.log(data);
         }
     });
+
 });

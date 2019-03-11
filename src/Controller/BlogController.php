@@ -12,6 +12,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class BlogController extends AbstractController
@@ -46,7 +47,7 @@ class BlogController extends AbstractController
     /**
      * @Route("article/{slug}/comment/new", name="comment_new", methods={"POST"})
      */
-    public function newComment(Request $request, Article $article): Response
+    public function newComment(Request $request, Article $article): JsonResponse
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -61,8 +62,12 @@ class BlogController extends AbstractController
             $em->persist($comment);
             $em->flush();
         }
-        new Response(json_encode($comment));
-        //return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
+
+        if ($request->isXMLHttpRequest()) {
+          return new JsonResponse(array('data' => $comment));
+        }
+
+        return $this->redirectToRoute('article_show', ['slug' => $article->getSlug()]);
     }
 
     /**
